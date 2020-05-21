@@ -13,7 +13,7 @@ export default new Vuex.Store({
     equipments: [{ invId: 1, description: 'Test', image: 'https://i.unishop.by/models/smartbuy/olt_240_gb_sb240gb-jlt-25sat3_0.jpg', name: 'An Item', price: 999 },
       { invId: 2, description: 'Test', image: 'https://ae01.alicdn.com/kf/HTB1nt4PPXXXXXc2XpXXq6xXFXXXb/NT-128-80-22mm-Hot-sale-NGFF-M-2-128GB-SSD-hard-drive-for-Ultrabook-Notebook.jpg', name: 'Thing', price: 1499 },
       { invId: 3, description: 'Test', image: 'https://pbs.twimg.com/media/ECqyMX9U4AAwxZw.jpg:large', name: 'Doo-dad', price: 499 },
-      { invId: 4, description: 'Test', image: 'https://a.allegroimg.com/s1440/064146/f7abfff14d91b79cec28a0e8e0c9', name: 'Other thing', price: 299 }],
+      { invId: 4, description: 'Test', image: 'https://a.allegroimg.com/s1440/064146/f7abfff14d91b79cec28a0e8e0c9', name: 'Процессор Intel Core i9-9900K', price: 39300 }],
     inCart: [],
   },
   mutations: {
@@ -36,11 +36,20 @@ export default new Vuex.Store({
       state.username = username;
       state.role = role;
     },
-    add_to_cart(state, invId) {
-      state.inCart.push(invId);
+    add_to_cart(state, payload) {
+      const id = state.inCart.indexOf(state.inCart.find(item => item.id === payload.id));
+      console.log(id);
+      if (id !== -1) {
+        state.inCart[id].count = payload.count;
+      } else {
+        state.inCart.push({ id: payload.id, count: payload.count });
+      }
     },
     remove_from_cart(state, index) {
-      state.inCart.splice(index, 1);
+      state.inCart.splice(state.inCart.find(item => item === index), 1);
+    },
+    clean(state) {
+      state.inCart = [];
     },
   },
   actions: {
@@ -93,11 +102,14 @@ export default new Vuex.Store({
         resolve();
       });
     },
-    addToCart({ commit }, invId) {
-      commit('add_to_cart', invId);
+    addToCart({ commit }, payload) {
+      commit('add_to_cart', payload);
     },
     removeFromCart({ commit }, index) {
       commit('remove_from_cart', index);
+    },
+    clean({ commit }) {
+      commit('clean');
     },
   },
   getters: {

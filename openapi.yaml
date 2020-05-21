@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Final
-  description: description
+  title: BEST_Hack_Final
+  description: Frontend and Backend interaction apec 
   version: 0.1-oas3
 servers:
 - url: /

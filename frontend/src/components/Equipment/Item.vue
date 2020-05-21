@@ -5,10 +5,17 @@
          <div class="card-body">
             <h4 class="card-title">{{ name }}</h4>
             <div class="card-text">{{description}}</div>
-            <div class="card-text">${{ price | dollars }}</div>
-            <div class="row justify-content-end">
+            <div class="card-text">Price: {{ price }} ₽</div>
+           <div class="card-text">Quantity: {{count}}</div>
+           <div>
+               <p>
+                <button class="btn btn-success" @click="increment">+</button>
+                <button class="btn btn-danger" @click="decrement">-</button>
+               </p>
+           </div>
+           <div>
               <button class="btn btn-primary" @click="addToCart(invId)">Add to cart</button>
-            </div>
+           </div>
          </div>
        </div>
 </div>
@@ -18,12 +25,23 @@
 export default {
   name: 'Item',
   props: ['invId', 'image', 'name', 'description', 'price'],
-  filters: {
-    dollars: num => `${num / 100}`,
+  data() {
+    return {
+      count: 0,
+    };
   },
   methods: {
     addToCart(invId) {
-      this.$store.dispatch('addToCart', invId);
+      this.$store.dispatch('addToCart', { id: invId, count: this.count });
+      this.count = 0;
+    },
+    increment() {
+      this.count += 1;
+    },
+    decrement() {
+      if (this.count > 0) {
+        this.count -= 1;
+      }
     },
   },
 };

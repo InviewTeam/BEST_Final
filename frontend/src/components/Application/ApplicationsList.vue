@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getApplications() {
-      const path = '';
+      const path = 'http://localhost:1984/applications';
       axios.get(path, {
         headers: { Authorization: `Bearer ${this.$store.state.token}` },
       }).then((resp) => {
@@ -127,7 +127,7 @@ export default {
         });
     },
     removeApplication(appID) {
-      const path = `http://localhost:1984/delete/${appID}`;
+      const path = `http://localhost:1984/delete/applications/${appID}`;
       axios.delete(path, {
         headers: { Authorization: `Bearer ${this.$store.state.token}` },
       })

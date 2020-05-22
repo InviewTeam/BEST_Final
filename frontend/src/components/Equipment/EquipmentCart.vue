@@ -79,7 +79,7 @@ export default {
       });
     },
     addRequest(payload) {
-      const path = '';
+      const path = 'http://localhost:1984/order';
       console.log(payload);
       axios.post(path, payload);
       this.$store.dispatch('clean');

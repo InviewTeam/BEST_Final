@@ -36,7 +36,9 @@ export default {
     Item,
     EquipmentCart,
   },
-
+  created() {
+    this.$store.dispatch('get_equipment');
+  },
 };
 </script>
 

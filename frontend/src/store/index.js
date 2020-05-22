@@ -10,10 +10,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || '',
     role: '',
     username: '',
-    equipments: [{ invId: 1, description: 'Test', image: 'https://i.unishop.by/models/smartbuy/olt_240_gb_sb240gb-jlt-25sat3_0.jpg', name: 'An Item', price: 999 },
-      { invId: 2, description: 'Test', image: 'https://ae01.alicdn.com/kf/HTB1nt4PPXXXXXc2XpXXq6xXFXXXb/NT-128-80-22mm-Hot-sale-NGFF-M-2-128GB-SSD-hard-drive-for-Ultrabook-Notebook.jpg', name: 'Thing', price: 1499 },
-      { invId: 3, description: 'Test', image: 'https://pbs.twimg.com/media/ECqyMX9U4AAwxZw.jpg:large', name: 'Doo-dad', price: 499 },
-      { invId: 4, description: 'Test', image: 'https://a.allegroimg.com/s1440/064146/f7abfff14d91b79cec28a0e8e0c9', name: 'Процессор Intel Core i9-9900K', price: 39300 }],
+    equipments: [],
     inCart: [],
   },
   mutations: {
@@ -51,6 +48,9 @@ export default new Vuex.Store({
     clean(state) {
       state.inCart = [];
     },
+    update(state, payload) {
+      state.equipments = payload;
+    },
   },
   actions: {
     login({ commit }, user) {
@@ -84,7 +84,7 @@ export default new Vuex.Store({
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request');
-        axios({ url: 'http://157.245.201.175:1984/register', data: user, method: 'POST' })
+        axios({ url: 'http://localhost:1984/register', data: user, method: 'POST' })
           .then((resp) => {
             console.log(resp);
             resolve(resp);
@@ -110,6 +110,13 @@ export default new Vuex.Store({
     },
     clean({ commit }) {
       commit('clean');
+    },
+    get_equipment({ commit }) {
+      const path = 'http://localhost:1984/equipments';
+      axios.get(path)
+        .then((resp) => {
+          commit('update', resp.data);
+        }).catch(err => console.log(err));
     },
   },
   getters: {

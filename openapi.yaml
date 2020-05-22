@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: BEST_Hack_Final
-  description: Frontend and Backend interaction apec 
+  description: Frontend and Backend interaction apec
   version: 0.1-oas3
 servers:
 - url: /
@@ -38,6 +38,60 @@ paths:
                 $ref: '#/components/schemas/Token'
         "400":
           description: Bad Request
+  /add/applications:
+    post:
+      summary: send request to tech support
+      operationId: Application
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+  /get/applications:
+    get:
+      summary: get all applications
+      operationId: GetApplications
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetApplications'
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+  /delete/application/{id}:
+    delete:
+      summary: Delete application
+      operationId: deleteApplication
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
   /equipments:
     get:
       summary: Get all available items
@@ -210,6 +264,35 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Equipment'
+    Application:
+      required:
+      - description
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    GetApplications:
+      required:
+      - description
+      - executor
+      - id
+      - status
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        executor:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

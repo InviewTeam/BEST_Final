@@ -80,7 +80,7 @@ func CreateUser(c Credentials) error {
 	return nil
 }
 
-func isAdmin(token string) bool {
+func IsAdmin(token string) bool {
 	temp := &User{}
 	GetDB().Table("users").Where("token = ?", token).First(temp)
 	if temp.Role == "admin" {

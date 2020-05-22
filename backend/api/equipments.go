@@ -19,7 +19,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	h := r.Header.Get("Authorization")
-	if _, err := db.Auth(h); err != nil {
+	tk, err := db.Auth(h)
+	if (err != nil) || !db.IsAdmin(tk) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -44,11 +45,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
-	h := r.Header.Get("Authorization")
-	if _, err := db.Auth(h); err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
+
 	var eqs []db.Equipment
 	eqs = db.Get()
 	req, err := json.Marshal(eqs)
@@ -67,7 +64,8 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	h := r.Header.Get("Authorization")
-	if _, err := db.Auth(h); err != nil {
+	tk, err := db.Auth(h)
+	if (err != nil) || !db.IsAdmin(tk) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -99,13 +97,14 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	h := r.Header.Get("Authorization")
-	if _, err := db.Auth(h); err != nil {
+	tk, err := db.Auth(h)
+	if (err != nil) || !db.IsAdmin(tk) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
 	param := getParam(r)
-	err := db.Delete(param)
+	err = db.Delete(param)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return

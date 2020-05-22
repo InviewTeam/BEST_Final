@@ -4,9 +4,10 @@ import "github.com/jinzhu/gorm"
 
 type Equipment struct {
 	gorm.Model
-	Name        string `json:"name"`
+	Title       string `json:"title"`
 	Description string `json:"description"`
 	Price       string `json:"price"`
+	Image       string `json:"image"`
 }
 
 type Order struct {

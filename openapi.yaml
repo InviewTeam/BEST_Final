@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: BEST_Hack_Final
+  description: Frontend and Backend interaction apec 
+  version: 0.1-oas3
+servers:
+- url: /
+paths:
+  /register:
+    post:
+      summary: Registration
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationData'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+  /login:
+    post:
+      summary: Login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationData'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        "400":
+          description: Bad Request
+  /equipments:
+    get:
+      summary: Get all available items
+      operationId: getEquipments
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipments'
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+  /order:
+    post:
+      summary: Create an order
+      operationId: order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+  /add:
+    post:
+      summary: Add new item
+      operationId: createEquipment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipment'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+  /update/{id}:
+    put:
+      summary: Update item
+      operationId: updateEquipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipment'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+  /delete/{id}:
+    delete:
+      summary: Delete item
+      operationId: deleteEquipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+  /whoami:
+    get:
+      summary: Get username and role
+      operationId: Whoami
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        "400":
+          description: Bad Request
+        "401":
+          description: Not authenticated
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    RegistrationData:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    UserData:
+      required:
+      - role
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        role:
+          type: string
+    Order:
+      required:
+      - name
+      - quantity
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: string
+    Token:
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          type: string
+    Equipment:
+      required:
+      - description
+      - image
+      - price
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: string
+        image:
+          type: string
+    Equipments:
+      type: array
+      items:
+        $ref: '#/components/schemas/Equipment'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

@@ -5,7 +5,7 @@ import (
 )
 
 func Create(es Equipment) {
-	GetDB().Create(&Equipment{Name: es.Name, Description: es.Description, Price: es.Price})
+	GetDB().Create(&Equipment{Title: es.Title, Description: es.Description, Price: es.Price, Image: es.Image})
 }
 
 func Update(eq Equipment, ID string) error {
@@ -16,9 +16,10 @@ func Update(eq Equipment, ID string) error {
 		return err
 	}
 
-	equipment.Name = eq.Name
+	equipment.Title = eq.Title
 	equipment.Description = eq.Description
 	equipment.Price = eq.Price
+	equipment.Image = eq.Image
 
 	GetDB().Save(&equipment)
 	return nil

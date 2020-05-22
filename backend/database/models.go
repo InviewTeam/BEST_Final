@@ -37,3 +37,16 @@ type User struct {
 	Token    string `json:"token"`
 	Role     string `json:"role"`
 }
+
+type Application struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+type ApplicationDB struct {
+	gorm.Model
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+	Executor    string `json:"executor"`
+}

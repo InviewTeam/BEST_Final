@@ -90,7 +90,7 @@ func IsAdmin(token string) bool {
 }
 
 func GetAllUsers(token string) ([]UserData, error) {
-	if !isAdmin(token) {
+	if !IsAdmin(token) {
 		return nil, ErrUnauthorized
 	}
 	res := []User{}

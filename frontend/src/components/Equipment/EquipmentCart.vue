@@ -69,17 +69,17 @@ export default {
     createPayload() {
       return this.$store.getters.getCart.map((cartItem) => {
         // eslint-disable-next-line max-len
-        const title = this.$store.getters.getEquipments.find(equipmentItem => cartItem.id === equipmentItem.invId).name;
+        const name = this.$store.getters.getEquipments.find(equipmentItem => cartItem.id === equipmentItem.invId).name;
         const count = this.$store.getters.getCart.find(item => item.id === cartItem.id).count;
         const info = {
-          title,
-          count,
+          title: name,
+          quantity: count,
         };
         return info;
       });
     },
     addRequest(payload) {
-      const path = '';
+      const path = 'http://localhost:1984/order';
       console.log(payload);
       axios.post(path, payload);
       this.$store.dispatch('clean');

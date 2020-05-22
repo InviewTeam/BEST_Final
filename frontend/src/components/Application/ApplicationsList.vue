@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getApplications() {
-      const path = 'http://localhost:1984/applications';
+      const path = 'http://localhost:1984/get/applications';
       axios.get(path, {
         headers: { Authorization: `Bearer ${this.$store.state.token}` },
       }).then((resp) => {
@@ -115,7 +115,7 @@ export default {
       this.initForm();
     },
     sendApplication(payload) {
-      const path = '';
+      const path = 'http://localhost:1984/add/applications';
       axios.post(path, payload, {
         headers: { Authorization: `Bearer ${this.$store.state.token}` },
       })
